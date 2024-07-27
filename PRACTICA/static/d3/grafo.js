@@ -1,0 +1,21 @@
+var nodes = new vis.DataSet([{id: 1,label:"Alas Bielas"},
+{id: 2,label:"La lechuza"},
+{id: 3,label:"A la mano de Dios"},
+{id: 4,label:"La ultima y nos vamos"},
+{id: 5,label:"Los foraneos"},
+{id: 6,label:"PapasJhons"},
+]);
+var edges = new vis.DataSet([{from: 1,to:6,label:"9610.519"},
+{from: 1,to:4,label:"9607.387"},
+{from: 2,to:3,label:"4.567"},
+{from: 3,to:2,label:"4.567"},
+{from: 3,to:6,label:"3.487"},
+{from: 3,to:4,label:"1.495"},
+{from: 4,to:1,label:"9607.387"},
+{from: 4,to:3,label:"1.495"},
+{from: 4,to:5,label:"5.322"},
+{from: 5,to:4,label:"5.322"},
+{from: 6,to:1,label:"9610.519"},
+{from: 6,to:3,label:"3.487"},
+]);
+var container = document.getElementById("mynetwork"); var data = {nodes: nodes,edges: edges,};var options = {};var network = new vis.Network(container, data, options);

@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "fecha": "2005-05-25",
+        "nene": 0,
+        "peso": 50,
+        "estatura": 1.75,
+        "censador": "Isabel Morocho"
+    },
+    {
+        "id": 2,
+        "fecha": "2005-05-25",
+        "nene": 0,
+        "peso": 50,
+        "estatura": 1.75,
+        "censador": "Isabel Morocho"
+    }
+]
