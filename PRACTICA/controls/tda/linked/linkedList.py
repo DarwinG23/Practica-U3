@@ -1,7 +1,6 @@
 from controls.tda.linked.node import Node
 from controls.exception.linkedEmpty import LinkedEmpty
 from controls.exception.arrayPositionException import ArrayPositionException
-from controls.tdaArray import TDAArray
 from numbers import Number
 from controls.tda.linked.burbuja import Burbuja
 from controls.tda.linked.insercion import Insercion

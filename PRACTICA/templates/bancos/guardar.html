@@ -1,0 +1,60 @@
+{% extends "templateP.html" %}
+{% block content %}
+<h2 class="text-white text-center mb-4">Agregar Bancos</h2>
+<div class="booking-form-body">
+    <a href="/negocios" class="btn btn-danger mb-4">VOLVER</a>
+    <form id="form" class="custom-form booking-form" action="/bancos/guardar" method="post" role="form">
+        <div class="row">
+            <div class="col-lg-6 col-12 mb-3">
+                <div id="map" style="height: 180px;"></div>
+                <input type="text" name="latitud" class="form-control mt-2" id="latitud" placeholder="Latitud" required>
+                <input type="text" name="longitud" class="form-control mt-2" id="longitud" placeholder="Longitud" required>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <input type="text" name="direccion" class="form-control" id="direccion" placeholder="Dirección" required>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <input type="text" name="nombre" class="form-control" placeholder="Ingrese el nombre" required>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <input type="text" name="telefono" class="form-control" placeholder="Telefono" required>
+            </div>
+            <div class="col-lg-6 col-12 mb-3">
+                <input type="text" name="horario" class="form-control" placeholder="Horario" required>
+            </div>
+            <div class="col-lg-4 col-md-6 col-8 mx-auto mt-3">
+                <button id="boton" type="submit" class="form-control btn btn-success">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    var map = L.map('map').setView([-3.995258, -79.2169059], 11);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var marker = L.marker([-3.995258, -79.2169059]).addTo(map)
+        .bindPopup('Haga clic en el mapa para mover el marcador y obtener la dirección.')
+        .openPopup();
+
+    function onMapClick(e) {
+        var latlng = e.latlng;
+        marker.setLatLng(latlng);
+        document.getElementById('latitud').value = latlng.lat;
+        document.getElementById('longitud').value = latlng.lng;
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}`)
+            .then(response => response.json())
+            .then(data => {
+                var address = data.display_name;
+                document.getElementById('direccion').value = address;
+            })
+            .catch(error => console.log('Error en la geocodificación inversa:', error));
+    }
+
+    map.on('click', onMapClick);
+</script>
+{% endblock %}

@@ -1,30 +1,28 @@
 {
-    "vertices": 6,
-    "aristas": 6,
+    "vertices": 3,
+    "aristas": 3,
     "etiquetas": [
-        "Alas Bielas",
-        "La lechuza",
-        "A la mano de Dios",
-        "La ultima y nos vamos",
-        "Los foraneos",
-        "PapasJhons"
+        "Banco de LOJA - Agencia UNL",
+        "PuntoBB Banco Bolivariano",
+        "Agencia Banco de Loja"
     ],
     "etiquetasVertice": {
-        "Alas Bielas": 0,
-        "La lechuza": 1,
-        "A la mano de Dios": 2,
-        "La ultima y nos vamos": 3,
-        "Los foraneos": 4,
-        "PapasJhons": 5
+        "Banco de LOJA - Agencia UNL": 0,
+        "PuntoBB Banco Bolivariano": 1,
+        "Agencia Banco de Loja": 2
     },
     "adyacencias": [
         {
             "from": 1,
-            "to": 6
+            "to": 3
         },
         {
             "from": 1,
-            "to": 4
+            "to": 2
+        },
+        {
+            "from": 2,
+            "to": 1
         },
         {
             "from": 2,
@@ -32,39 +30,11 @@
         },
         {
             "from": 3,
+            "to": 1
+        },
+        {
+            "from": 3,
             "to": 2
-        },
-        {
-            "from": 3,
-            "to": 6
-        },
-        {
-            "from": 3,
-            "to": 4
-        },
-        {
-            "from": 4,
-            "to": 1
-        },
-        {
-            "from": 4,
-            "to": 3
-        },
-        {
-            "from": 4,
-            "to": 5
-        },
-        {
-            "from": 5,
-            "to": 4
-        },
-        {
-            "from": 6,
-            "to": 1
-        },
-        {
-            "from": 6,
-            "to": 3
         }
     ]
 }
