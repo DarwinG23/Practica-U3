@@ -118,3 +118,22 @@ def reiniciar_grafo():
     bg.create_graph(None,None,True)
     return redirect("/bancos/grafo_ver_admin", code=302)
 
+
+@router.route('/bancos/ruta/<origen>/<destino>/<metodo>')
+def encontrar_ruta(origen, destino, metodo):
+    bg = BancoGrafo()
+    bg.create_graph()
+    
+    if origen == destino:
+        flash('Por favor, selecione un destino y origen distintos', 'error')
+        return redirect(url_for('router.grafo_ver_admin'))
+        
+    if bg.BFS():
+        camino = bg.Floyd(origen, destino)
+        flash('El camino más corto es: ' + camino, 'error')
+        return redirect("/bancos/grafo_ver_admin", code=302)
+    else:
+        flash('El grafo no está conectado', 'error')
+        return redirect("/bancos/grafo_ver_admin", code=302)
+    
+

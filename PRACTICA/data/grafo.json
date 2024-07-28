@@ -1,15 +1,19 @@
 {
-    "vertices": 3,
-    "aristas": 3,
+    "vertices": 5,
+    "aristas": 5,
     "etiquetas": [
         "Banco de LOJA - Agencia UNL",
         "PuntoBB Banco Bolivariano",
-        "Agencia Banco de Loja"
+        "Agencia Banco de Loja",
+        "CoopMego",
+        "BanEcuador"
     ],
     "etiquetasVertice": {
         "Banco de LOJA - Agencia UNL": 0,
         "PuntoBB Banco Bolivariano": 1,
-        "Agencia Banco de Loja": 2
+        "Agencia Banco de Loja": 2,
+        "CoopMego": 3,
+        "BanEcuador": 4
     },
     "adyacencias": [
         {
@@ -29,12 +33,28 @@
             "to": 3
         },
         {
+            "from": 2,
+            "to": 4
+        },
+        {
             "from": 3,
             "to": 1
         },
         {
             "from": 3,
             "to": 2
+        },
+        {
+            "from": 4,
+            "to": 2
+        },
+        {
+            "from": 4,
+            "to": 5
+        },
+        {
+            "from": 5,
+            "to": 4
         }
     ]
 }

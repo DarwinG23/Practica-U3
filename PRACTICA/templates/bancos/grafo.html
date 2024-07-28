@@ -39,16 +39,18 @@
                         </div>
 
                         <div class="col-lg-6 col-12">
-                            <span>Camino:</span>
-                            <input type="text" name="ruta" class="form-control mt-2" id="ruta" placeholder="Su ruta">
+                            <span>Metodo:</span>
+                            <select id="metodo"  class="form-control" name="metodo">
+                                <option value="1">Floyd</option>
+                                <option value="2">Dijkstra</option>
+                            </select>
                         </div>
                         <div class="booking-form-body" style="margin-top: 3%;">       
                             <button id="boton" type="submit" class="btn btn-success">Agregar adyacencia</button> 
                             <a href="/bancos/reiniciar" class="btn btn-danger">Reiniciar Grafo</a>
                             <a href="/bancos" class="btn btn-info">Volver</a>
                             <a href="/bancos/grafo_banco"  target="_blank"   class="btn btn-info">VER GRAFO</a>
-                            <a href="/bancos/ruta"  target="_blank"   class="btn btn-danger">Buscar camino</a>
-                            
+                            <a id="buscarCamino" href="#" class="btn btn-danger">Buscar camino</a>
                         </div>
                     </form>
 
@@ -79,4 +81,21 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    document.getElementById('buscarCamino').addEventListener('click', function(event) {
+        event.preventDefault(); // Previene la acción predeterminada del enlace
+
+        // Obtiene los valores seleccionados en los select
+        var origen = document.getElementById('origen').value;
+        var destino = document.getElementById('destino').value;
+        var metodo = document.getElementById('metodo').value;
+
+        // Construye la URL dinámica
+        var url = '/bancos/ruta/' + origen + '/' + destino + '/' + metodo;
+
+        // Redirige a la nueva URL
+        window.location.href = url;
+    });
+</script>
 {% endblock %}

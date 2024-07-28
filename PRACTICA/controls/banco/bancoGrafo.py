@@ -9,6 +9,8 @@ class BancoGrafo():
         self.__grafo = None
         self.__ndao = BancoControl()
         self.__json_folder = "data/grafo.json"
+        self.__matrizDistancias = []
+        self.__matrizRecorridos = []
         
     
 
@@ -36,6 +38,7 @@ class BancoGrafo():
                 grafoCargado = self.loadGraph
                 
                 adyacencias = grafoCargado.getListAdjacent
+                
         
                 for i in range(0, len(adyacencias)):
                     dic = adyacencias[i]
@@ -96,4 +99,93 @@ class BancoGrafo():
             print(f"El archivo {json_file} no existe.")
             return None
         
+    def crearMatrices(self):
+        if self.__grafo is not None:
+            arrayBancos = self.__ndao.to_dic()
+            
+            matrizDistancias = []
+            matrizRecorridos = []
+
+            for i in range(len(arrayBancos)):
+                filaDistancias = ["INF"] * len(arrayBancos)
+                filaRecorridos = ["-----"] * len(arrayBancos)
+                matrizDistancias.append(filaDistancias)
+                matrizRecorridos.append(filaRecorridos)
+            
+            for i in range(len(arrayBancos)):
+                for j in range(len(arrayBancos)):
+                    if i == j:
+                        matrizDistancias[i][j] = 0
+                        matrizRecorridos[i][j] = "-----"
+                    else:
+                        matrizRecorridos[i][j] = arrayBancos[j]["nombre"]
+                    if self.__grafo.exist_edge_E(arrayBancos[i]["nombre"], arrayBancos[j]["nombre"]):
+                        matrizDistancias[i][j] = self.__grafo.weight_edges_E(arrayBancos[i]["nombre"], arrayBancos[j]["nombre"])
+                        
+            
+            self.__matrizDistancias = matrizDistancias
+            self.__matrizRecorridos = matrizRecorridos
+        
+    def BFS(self):
+        visitados = [False] * len(self.__ndao.to_dic())
+        Inicio = 0
+        lista = []
+        lista.append(Inicio)
+        visitados[Inicio] = True
+        i = 0
+        while i < len(lista):
+            nodoActual = lista[i]
+            listaAdy = self.__grafo.adjacent(nodoActual)
+            listaAdy = listaAdy.toArray
+            for j in range(0, len(listaAdy)):
+                destinoId = listaAdy[j]._destination
+                if not visitados[destinoId]:
+                    visitados[destinoId] = True
+                    lista.append(destinoId)
+            i += 1
+        
+        for i in range(0, len(visitados)):
+            if not visitados[i]:
+                print("No se ha visitado el nodo: ", i)
+                return False
+        
+        return True 
+    
+    
+ 
+    
+    
+    def Floyd(self, origen, destino):
+        self.crearMatrices()
+        arrayBancos = self.__ndao.to_dic()
+              
+        for k in range(len(arrayBancos)):
+            for i in range(len(arrayBancos)):
+                for j in range(len(arrayBancos)):
+                    if float(self.__matrizDistancias[i][j]) > float(self.__matrizDistancias[i][k]) + float(self.__matrizDistancias[k][j]):
+                        self.__matrizDistancias[i][j] = round(float(self.__matrizDistancias[i][k] + self.__matrizDistancias[k][j]),3)
+                        self.__matrizRecorridos[i][j] = self.__matrizRecorridos[i][k]
+                        
+        #encontrar camino
+        camino = []
+        origenid = int(origen)-1
+        destinoid = int(destino)-1
+        bancoDestino = arrayBancos[destinoid]["nombre"] 
+        banco = arrayBancos[origenid]["nombre"]
+        camino.append(str(banco) + " --> ")
+        
+        while banco != bancoDestino:
+            banco = self.__matrizRecorridos[origenid][destinoid]
+            
+            if banco == bancoDestino:
+                camino.append(str(banco))
+            else:
+               camino.append(str(banco) + " --> ")
+               
+            origenid = self.__grafo.getVertex(banco)   
+    
+        
+        return "".join(camino)
+       
+            
         
