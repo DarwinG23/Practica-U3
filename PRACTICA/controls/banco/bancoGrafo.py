@@ -199,17 +199,23 @@ class BancoGrafo():
         camino = []
         camino.append(str(elementoOrigen) + " --> ") 
         elemento = elementoOrigen
+        visitados = [False] * len(arrayElementos)
+        visitados[origenid] = True
         
         while elemento != elementoDestino:
             adyacentes = self.__grafo.adjacent_E(elemento)
             for i in range(0, adyacentes._length):
                 verticeAdy = adyacentes.getNode(i)
                 peso = verticeAdy._weight
-                for j in range(0, adyacentes._length):
-                    if peso > adyacentes.getNode(j)._weight:
-                        peso = adyacentes.getNode(j)._weight
-                        verticeAdy = adyacentes.getNode(j)
-                        
+                if visitados[int(verticeAdy._destination)]: 
+                    continue
+                else:
+                    for j in range(0, adyacentes._length):
+                        if peso > adyacentes.getNode(j)._weight and not visitados[int(adyacentes.getNode(j)._destination)]:
+                            peso = adyacentes.getNode(j)._weight
+                            verticeAdy = adyacentes.getNode(j)
+                
+               
                         
                 
                 elemento = arrayElementos[int(verticeAdy._destination)]["nombre"]
@@ -218,7 +224,9 @@ class BancoGrafo():
                     camino.append(str(elemento))
                 else:        
                     camino.append(str(elemento) + " --> ")
+                visitados[int(verticeAdy._destination)] = True
                 break
+            
                    
         return "".join(camino) + "  |Con una distancia de: " + str(round(float(distancia),3))
         
