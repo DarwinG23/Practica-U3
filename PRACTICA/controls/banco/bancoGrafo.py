@@ -3,6 +3,7 @@ from controls.tda.graph.graphNoManagedLabelledDos import GraphNoManagedLabelledD
 import os, re, json
 from controls.tda.graph.adjacent import Adjacent
 from controls.banco.distancia import Distancia
+from controls.tda.linked.linkedList import Linked_List
 
 class BancoGrafo():
     def __init__(self):
@@ -101,30 +102,31 @@ class BancoGrafo():
         
     def crearMatrices(self):
         if self.__grafo is not None:
-            arrayBancos = self.__ndao.to_dic()
+            arrayElementos = self.__ndao.to_dic()
             
             matrizDistancias = []
             matrizRecorridos = []
 
-            for i in range(len(arrayBancos)):
-                filaDistancias = ["INF"] * len(arrayBancos)
-                filaRecorridos = ["-----"] * len(arrayBancos)
+            for i in range(len(arrayElementos)):
+                filaDistancias = ["INF"] * len(arrayElementos)
+                filaRecorridos = ["-----"] * len(arrayElementos)
                 matrizDistancias.append(filaDistancias)
                 matrizRecorridos.append(filaRecorridos)
             
-            for i in range(len(arrayBancos)):
-                for j in range(len(arrayBancos)):
+            for i in range(len(arrayElementos)):
+                for j in range(len(arrayElementos)):
                     if i == j:
                         matrizDistancias[i][j] = 0
                         matrizRecorridos[i][j] = "-----"
                     else:
-                        matrizRecorridos[i][j] = arrayBancos[j]["nombre"]
-                    if self.__grafo.exist_edge_E(arrayBancos[i]["nombre"], arrayBancos[j]["nombre"]):
-                        matrizDistancias[i][j] = self.__grafo.weight_edges_E(arrayBancos[i]["nombre"], arrayBancos[j]["nombre"])
+                        matrizRecorridos[i][j] = arrayElementos[j]["nombre"]
+                    if self.__grafo.exist_edge_E(arrayElementos[i]["nombre"], arrayElementos[j]["nombre"]):
+                        matrizDistancias[i][j] = self.__grafo.weight_edges_E(arrayElementos[i]["nombre"], arrayElementos[j]["nombre"])
                         
             
             self.__matrizDistancias = matrizDistancias
             self.__matrizRecorridos = matrizRecorridos
+            
         
     def BFS(self):
         visitados = [False] * len(self.__ndao.to_dic())
@@ -151,41 +153,77 @@ class BancoGrafo():
         
         return True 
     
-    
- 
-    
-    
-    def Floyd(self, origen, destino):
+    def floyd(self, origen, destino):
         self.crearMatrices()
-        arrayBancos = self.__ndao.to_dic()
+        arrayElementos = self.__ndao.to_dic()
               
-        for k in range(len(arrayBancos)):
-            for i in range(len(arrayBancos)):
-                for j in range(len(arrayBancos)):
+        for k in range(len(arrayElementos)):
+            for i in range(len(arrayElementos)):
+                for j in range(len(arrayElementos)):
                     if float(self.__matrizDistancias[i][j]) > float(self.__matrizDistancias[i][k]) + float(self.__matrizDistancias[k][j]):
                         self.__matrizDistancias[i][j] = round(float(self.__matrizDistancias[i][k] + self.__matrizDistancias[k][j]),3)
                         self.__matrizRecorridos[i][j] = self.__matrizRecorridos[i][k]
                         
-        #encontrar camino
+        
         camino = []
         origenid = int(origen)-1
         destinoid = int(destino)-1
-        bancoDestino = arrayBancos[destinoid]["nombre"] 
-        banco = arrayBancos[origenid]["nombre"]
-        camino.append(str(banco) + " --> ")
+        elementoDestino = arrayElementos[destinoid]["nombre"] 
+        elemento = arrayElementos[origenid]["nombre"]
+        camino.append(str(elemento) + " --> ")
         
-        while banco != bancoDestino:
-            banco = self.__matrizRecorridos[origenid][destinoid]
+        while elemento != elementoDestino:
+            elemento = self.__matrizRecorridos[origenid][destinoid]
             
-            if banco == bancoDestino:
-                camino.append(str(banco))
+            if elemento == elementoDestino:
+                camino.append(str(elemento))
             else:
-               camino.append(str(banco) + " --> ")
+               camino.append(str(elemento) + " --> ")
                
-            origenid = self.__grafo.getVertex(banco)   
-    
+            origenid = self.__grafo.getVertex(elemento)   
         
+        camino.append("  |Con una distancia de: " + str(self.__matrizDistancias[int(origen)-1][int(destino)-1]))
+         
         return "".join(camino)
+    
+    
+    def dijkstra(self, origen, destino):
+        
+        origenid = int(origen)-1
+        destinoid = int(destino)-1
+        arrayElementos = self.__ndao.to_dic()
+        elementoOrigen = arrayElementos[origenid]["nombre"]
+        elementoDestino = arrayElementos[destinoid]["nombre"]
+        
+        distancia = 0
+        camino = []
+        camino.append(str(elementoOrigen) + " --> ") 
+        elemento = elementoOrigen
+        
+        while elemento != elementoDestino:
+            adyacentes = self.__grafo.adjacent_E(elemento)
+            for i in range(0, adyacentes._length):
+                verticeAdy = adyacentes.getNode(i)
+                peso = verticeAdy._weight
+                for j in range(0, adyacentes._length):
+                    if peso > adyacentes.getNode(j)._weight:
+                        peso = adyacentes.getNode(j)._weight
+                        verticeAdy = adyacentes.getNode(j)
+                        
+                        
+                
+                elemento = arrayElementos[int(verticeAdy._destination)]["nombre"]
+                distancia += peso
+                if elemento == elementoDestino:
+                    camino.append(str(elemento))
+                else:        
+                    camino.append(str(elemento) + " --> ")
+                break
+                   
+        return "".join(camino) + "  |Con una distancia de: " + str(round(float(distancia),3))
+        
+        
+        
        
             
         

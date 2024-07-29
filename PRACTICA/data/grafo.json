@@ -1,6 +1,6 @@
 {
     "vertices": 5,
-    "aristas": 5,
+    "aristas": 6,
     "etiquetas": [
         "Banco de LOJA - Agencia UNL",
         "PuntoBB Banco Bolivariano",
@@ -45,12 +45,20 @@
             "to": 2
         },
         {
+            "from": 3,
+            "to": 5
+        },
+        {
             "from": 4,
             "to": 2
         },
         {
             "from": 4,
             "to": 5
+        },
+        {
+            "from": 5,
+            "to": 3
         },
         {
             "from": 5,

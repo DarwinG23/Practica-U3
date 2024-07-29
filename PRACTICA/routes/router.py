@@ -129,7 +129,10 @@ def encontrar_ruta(origen, destino, metodo):
         return redirect(url_for('router.grafo_ver_admin'))
         
     if bg.BFS():
-        camino = bg.Floyd(origen, destino)
+        if metodo == "1":
+            camino = bg.floyd(origen, destino)
+        else:
+            camino = bg.dijkstra(origen, destino)
         flash('El camino más corto es: ' + camino, 'error')
         return redirect("/bancos/grafo_ver_admin", code=302)
     else:
