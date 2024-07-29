@@ -100,131 +100,140 @@ class BancoGrafo():
             print(f"El archivo {json_file} no existe.")
             return None
         
+    def BFS(self):
+        visitados = Linked_List()
+        for i in range(0, len(self.__ndao.to_dic())): 
+            visitados.addNode(False)
+        Inicio = 0
+        
+
+        lista = Linked_List()
+        lista.addNode(Inicio)
+        visitados.get(Inicio)._data = True
+        i = 0
+
+        while i < lista._length:
+            nodoActual = lista.get(i)._data
+            listaAdy = self.__grafo.adjacent(nodoActual)
+            for j in range(0, listaAdy._length):
+                destinoId = listaAdy.getNode(j)._destination
+                if not visitados.get(destinoId)._data:
+                    visitados.get(destinoId)._data = True
+                    lista.addLast(destinoId)
+            i += 1
+
+        for i in range(0, visitados._length):
+            if not visitados.get(i)._data:
+                print("No se ha visitado el nodo: ", i)
+                return False
+        
+        return True 
+        
     def crearMatrices(self):
         if self.__grafo is not None:
             arrayElementos = self.__ndao.to_dic()
             
-            matrizDistancias = []
-            matrizRecorridos = []
+            matrizDistancias = Linked_List()
+            matrizRecorridos = Linked_List()
 
             for i in range(len(arrayElementos)):
-                filaDistancias = ["INF"] * len(arrayElementos)
-                filaRecorridos = ["-----"] * len(arrayElementos)
-                matrizDistancias.append(filaDistancias)
-                matrizRecorridos.append(filaRecorridos)
+                filaDistancias = Linked_List()
+                filaRecorridos = Linked_List()
+                for j in range(len(arrayElementos)):
+                    filaDistancias.addNode("INF")
+                    filaRecorridos.addNode("-----")
+                matrizDistancias.addNode(filaDistancias)
+                matrizRecorridos.addNode(filaRecorridos)
+                
             
             for i in range(len(arrayElementos)):
                 for j in range(len(arrayElementos)):
                     if i == j:
-                        matrizDistancias[i][j] = 0
-                        matrizRecorridos[i][j] = "-----"
+                        matrizDistancias.getNode(i).get(j)._data = 0
+                        matrizRecorridos.getNode(i).get(j)._data = "-----"
                     else:
-                        matrizRecorridos[i][j] = arrayElementos[j]["nombre"]
+                        matrizRecorridos.getNode(i).get(j)._data = arrayElementos[j]["nombre"]
                     if self.__grafo.exist_edge_E(arrayElementos[i]["nombre"], arrayElementos[j]["nombre"]):
-                        matrizDistancias[i][j] = self.__grafo.weight_edges_E(arrayElementos[i]["nombre"], arrayElementos[j]["nombre"])
+                        matrizDistancias.getNode(i).get(j)._data = self.__grafo.weight_edges_E(arrayElementos[i]["nombre"], arrayElementos[j]["nombre"])
                         
             
             self.__matrizDistancias = matrizDistancias
             self.__matrizRecorridos = matrizRecorridos
             
-        
-    def BFS(self):
-        visitados = [False] * len(self.__ndao.to_dic())
-        Inicio = 0
-        lista = []
-        lista.append(Inicio)
-        visitados[Inicio] = True
-        i = 0
-        while i < len(lista):
-            nodoActual = lista[i]
-            listaAdy = self.__grafo.adjacent(nodoActual)
-            listaAdy = listaAdy.toArray
-            for j in range(0, len(listaAdy)):
-                destinoId = listaAdy[j]._destination
-                if not visitados[destinoId]:
-                    visitados[destinoId] = True
-                    lista.append(destinoId)
-            i += 1
-        
-        for i in range(0, len(visitados)):
-            if not visitados[i]:
-                print("No se ha visitado el nodo: ", i)
-                return False
-        
-        return True 
     
     def floyd(self, origen, destino):
         self.crearMatrices()
-        arrayElementos = self.__ndao.to_dic()
+        dicElementos = self.__ndao.to_dic()
               
-        for k in range(len(arrayElementos)):
-            for i in range(len(arrayElementos)):
-                for j in range(len(arrayElementos)):
-                    if float(self.__matrizDistancias[i][j]) > float(self.__matrizDistancias[i][k]) + float(self.__matrizDistancias[k][j]):
-                        self.__matrizDistancias[i][j] = round(float(self.__matrizDistancias[i][k] + self.__matrizDistancias[k][j]),3)
-                        self.__matrizRecorridos[i][j] = self.__matrizRecorridos[i][k]
+        for k in range(len(dicElementos)):
+            for i in range(len(dicElementos)):
+                for j in range(len(dicElementos)):
+                    if float(self.__matrizDistancias.getNode(i).get(j)._data) > float(self.__matrizDistancias.getNode(i).get(k)._data) + float(self.__matrizDistancias.getNode(k).get(j)._data):
+                        self.__matrizDistancias.getNode(i).get(j)._data = round(float(self.__matrizDistancias.getNode(i).get(k)._data + self.__matrizDistancias.getNode(k).get(j)._data),3)
+                        self.__matrizRecorridos.getNode(i).get(j)._data = self.__matrizRecorridos.getNode(i).get(k)._data
                         
         
-        camino = []
+        camino = "La ruta mas corta es: "
         origenid = int(origen)-1
         destinoid = int(destino)-1
-        elementoDestino = arrayElementos[destinoid]["nombre"] 
-        elemento = arrayElementos[origenid]["nombre"]
-        camino.append(str(elemento) + " --> ")
-        
+        elementoDestino = dicElementos[destinoid]["nombre"] 
+        elemento = dicElementos[origenid]["nombre"]
+        camino = camino + str(elemento) + " --> "
         while elemento != elementoDestino:
-            elemento = self.__matrizRecorridos[origenid][destinoid]
+            
+            elemento = self.__matrizRecorridos.getNode(origenid).get(destinoid)._data
             
             if elemento == elementoDestino:
-                camino.append(str(elemento))
+                camino += str(elemento)
             else:
-               camino.append(str(elemento) + " --> ")
+               camino += str(elemento) + " --> "
                
             origenid = self.__grafo.getVertex(elemento)   
-        
-        camino.append("  |Con una distancia de: " + str(self.__matrizDistancias[int(origen)-1][int(destino)-1]))
          
-        return "".join(camino)
+        return "".join(camino) + "  |Con una distancia de: " + str(self.__matrizDistancias.getNode(int(origen)-1).get(int(destino)-1)._data) 
     
     
     def dijkstra(self, origen, destino):
         
         origenid = int(origen)-1
         destinoid = int(destino)-1
-        arrayElementos = self.__ndao.to_dic()
-        elementoOrigen = arrayElementos[origenid]["nombre"]
-        elementoDestino = arrayElementos[destinoid]["nombre"]
+        dicElementos = self.__ndao.to_dic()
+        elementoOrigen = dicElementos[origenid]["nombre"]
+        elementoDestino = dicElementos[destinoid]["nombre"]
         
         distancia = 0
-        camino = []
-        camino.append(str(elementoOrigen) + " --> ") 
+        camino = "La ruta mas corta es: "
+        camino = camino + str(elementoOrigen) + " --> "
         elemento = elementoOrigen
-        visitados = [False] * len(arrayElementos)
-        visitados[origenid] = True
+        visitados = Linked_List()
+        for i in range(0, len(dicElementos)):
+            visitados.addNode(False)
+            
+        visitados.get(origenid)._data = True
         
         while elemento != elementoDestino:
             adyacentes = self.__grafo.adjacent_E(elemento)
             for i in range(0, adyacentes._length):
                 verticeAdy = adyacentes.getNode(i)
                 peso = verticeAdy._weight
-                if visitados[int(verticeAdy._destination)]: 
+                if visitados.get(int(verticeAdy._destination))._data:
                     continue
                 else:
                     for j in range(0, adyacentes._length):
-                        if peso > adyacentes.getNode(j)._weight and not visitados[int(adyacentes.getNode(j)._destination)]:
+                        if peso > adyacentes.getNode(j)._weight and not visitados.get(int(adyacentes.getNode(j)._destination))._data:
                             peso = adyacentes.getNode(j)._weight
                             verticeAdy = adyacentes.getNode(j)
                 
                
                         
                 
-                elemento = arrayElementos[int(verticeAdy._destination)]["nombre"]
+                elemento = dicElementos[int(verticeAdy._destination)]["nombre"]
                 distancia += peso
                 if elemento == elementoDestino:
-                    camino.append(str(elemento))
+                    camino += str(elemento)
                 else:        
-                    camino.append(str(elemento) + " --> ")
-                visitados[int(verticeAdy._destination)] = True
+                    camino += str(elemento) + " --> "
+                visitados.get(int(verticeAdy._destination))._data = True
                 break
             
                    

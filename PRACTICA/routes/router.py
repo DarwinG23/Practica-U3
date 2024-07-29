@@ -133,7 +133,7 @@ def encontrar_ruta(origen, destino, metodo):
             camino = bg.floyd(origen, destino)
         else:
             camino = bg.dijkstra(origen, destino)
-        flash('El camino más corto es: ' + camino, 'error')
+        flash(camino, 'error')
         return redirect("/bancos/grafo_ver_admin", code=302)
     else:
         flash('El grafo no está conectado', 'error')
