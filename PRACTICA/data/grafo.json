@@ -1,19 +1,29 @@
 {
-    "vertices": 5,
-    "aristas": 6,
+    "vertices": 10,
+    "aristas": 12,
     "etiquetas": [
         "Banco de LOJA - Agencia UNL",
         "PuntoBB Banco Bolivariano",
         "Agencia Banco de Loja",
         "CoopMego",
-        "BanEcuador"
+        "BanEcuador",
+        "Codesarrollo",
+        "Banco Del Barrio",
+        "ATM COAC",
+        "Banco de Machala",
+        "Banco del Austro"
     ],
     "etiquetasVertice": {
         "Banco de LOJA - Agencia UNL": 0,
         "PuntoBB Banco Bolivariano": 1,
         "Agencia Banco de Loja": 2,
         "CoopMego": 3,
-        "BanEcuador": 4
+        "BanEcuador": 4,
+        "Codesarrollo": 5,
+        "Banco Del Barrio": 6,
+        "ATM COAC": 7,
+        "Banco de Machala": 8,
+        "Banco del Austro": 9
     },
     "adyacencias": [
         {
@@ -22,6 +32,18 @@
         },
         {
             "from": 1,
+            "to": 5
+        },
+        {
+            "from": 1,
+            "to": 6
+        },
+        {
+            "from": 1,
+            "to": 9
+        },
+        {
+            "from": 1,
             "to": 2
         },
         {
@@ -30,11 +52,7 @@
         },
         {
             "from": 2,
-            "to": 3
-        },
-        {
-            "from": 2,
-            "to": 4
+            "to": 6
         },
         {
             "from": 3,
@@ -42,27 +60,67 @@
         },
         {
             "from": 3,
-            "to": 2
-        },
-        {
-            "from": 3,
-            "to": 5
+            "to": 7
         },
         {
             "from": 4,
-            "to": 2
+            "to": 10
         },
         {
             "from": 4,
-            "to": 5
+            "to": 7
         },
         {
             "from": 5,
+            "to": 1
+        },
+        {
+            "from": 5,
+            "to": 8
+        },
+        {
+            "from": 6,
+            "to": 1
+        },
+        {
+            "from": 6,
+            "to": 2
+        },
+        {
+            "from": 7,
             "to": 3
         },
         {
-            "from": 5,
+            "from": 7,
             "to": 4
+        },
+        {
+            "from": 8,
+            "to": 5
+        },
+        {
+            "from": 8,
+            "to": 9
+        },
+        {
+            "from": 9,
+            "to": 1
+        },
+        {
+            "from": 9,
+            "to": 8
+        },
+        {
+            "from": 9,
+            "to": 10
+        },
+        {
+            "from": 10,
+            "to": 4
+        },
+        {
+            "from": 10,
+            "to": 9
         }
     ]
 }

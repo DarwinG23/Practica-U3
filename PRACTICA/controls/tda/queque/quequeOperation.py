@@ -30,4 +30,18 @@ class QuequeOperation(Linked_List):
             raise LinkedEmpty("Queque is Empty")
         else:
             return self.delete(0)
+        
+    def extraer_min(self):
+        if self.isEmpty:
+            raise LinkedEmpty("Queque is Empty")
+        else:
+            #encuentra el minimo de la cola 
+            min = self._head._data
+            pos = 0
+            for i in range(1, self._length):
+                if min > self.getNode(i):
+                    min = self.getNode(i)
+                    pos = i
+            return self.delete(pos)
+        
     

@@ -21,6 +21,10 @@ class QueQue():
 
     def isEmpty(self):
         self.__queque.isEmpty
+    
+    
+    def extraer_min(self):
+        self.__queque.extraer_min()
 
   
 

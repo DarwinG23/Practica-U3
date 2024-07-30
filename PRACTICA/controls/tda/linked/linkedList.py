@@ -353,6 +353,12 @@ class Linked_List(object):
                         array = order.shell_number_descent(array)
           
             self.toList(array)
+            
+    def updateNode(self, index, data, weight=0):
+        current = self.getNode(index)
+        if current:
+            current._data = data
+            current._weight = weight
 
             
     def  sort_models(self, atribute ,type = 1, method = 3):
@@ -456,6 +462,22 @@ class Linked_List(object):
             if str(getattr(arr[mid], atribute)).lower() == str(data).lower():
                 return arr[mid] 
             elif str(getattr(arr[mid], atribute)).lower() < str(data).lower():
+                left = mid + 1
+            else:
+                right = mid - 1
+        return -1   
+    
+    
+    def binary_search_models_id(self, data, atribute):
+        self.sort_models(atribute)
+        arr = self.toArray
+        left = 0
+        right = len(arr) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if int(getattr(arr[mid], atribute)) == int(data):
+                return arr[mid] 
+            elif int(getattr(arr[mid], atribute))  < int(data):
                 left = mid + 1
             else:
                 right = mid - 1

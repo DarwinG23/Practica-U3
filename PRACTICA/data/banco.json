@@ -43,5 +43,50 @@
         "telefono": "0985710661",
         "latitud": "-4.001898453171262",
         "longitud": "-79.20043945312501"
+    },
+    {
+        "id": 6,
+        "nombre": "Codesarrollo",
+        "direccion": "Jose M. Samaniego, El Valle, Loja, 110107, Ecuador",
+        "horario": "8am -5pm",
+        "telefono": "0985710661",
+        "latitud": "-3.979531561496164",
+        "longitud": "-79.20095443725587"
+    },
+    {
+        "id": 7,
+        "nombre": "Banco Del Barrio",
+        "direccion": "Atahualpa, San Pedro, Punzara, Loja, 110150, Ecuador",
+        "horario": "8am - 10pm",
+        "telefono": "93726361",
+        "latitud": "-4.001065650744343",
+        "longitud": "-79.21069622039796"
+    },
+    {
+        "id": 8,
+        "nombre": "ATM COAC",
+        "direccion": "Barrio Las Palmeras, Loja, 110108, Ecuador",
+        "horario": "9am -4pm",
+        "telefono": "0994390652",
+        "latitud": "-3.9992829824626837",
+        "longitud": "-79.19185638427736"
+    },
+    {
+        "id": 9,
+        "nombre": "Banco de Machala",
+        "direccion": "Indianapolis, Paris, Loja, 110107, Ecuador",
+        "horario": "8am - 9pm",
+        "telefono": "0970411882",
+        "latitud": "-3.989397631888293",
+        "longitud": "-79.19640541076662"
+    },
+    {
+        "id": 10,
+        "nombre": "Banco del Austro",
+        "direccion": "Avenida Orillas del Zamora, Juan Jose Pe\u00f1a, Loja, 110108, Ecuador",
+        "horario": "11am - 11pm",
+        "telefono": "0994390652",
+        "latitud": "-4.0000810029272",
+        "longitud": "-79.19593334198"
     }
 ]

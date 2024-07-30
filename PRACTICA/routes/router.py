@@ -103,8 +103,8 @@ def crear_ady():
     if grafo.exist_edges(int(origen)-1, int(destino)-1):
         flash('Ya existe una adyacencia entre estos dos bancos', 'error')
     else:
-        bancoOrigen = bc._list().binary_search_models(int(origen), "_id")
-        bancoDestino = bc._list().binary_search_models(int(destino), "_id")
+        bancoOrigen = bc._list().binary_search_models_id(origen, "_id")
+        bancoDestino = bc._list().binary_search_models_id(destino, "_id")
         
         bg = BancoGrafo()
         bg.create_graph(bancoOrigen, bancoDestino)
@@ -121,6 +121,7 @@ def reiniciar_grafo():
 
 @router.route('/bancos/ruta/<origen>/<destino>/<metodo>')
 def encontrar_ruta(origen, destino, metodo):
+    import time
     bg = BancoGrafo()
     bg.create_graph()
     
@@ -129,10 +130,14 @@ def encontrar_ruta(origen, destino, metodo):
         return redirect(url_for('router.grafo_ver_admin'))
         
     if bg.BFS():
+        inicio = time.time()
         if metodo == "1":
             camino = bg.floyd(origen, destino)
         else:
             camino = bg.dijkstra(origen, destino)
+        fin = time.time()
+        print("######################################################")
+        print(f"Timepo: {fin-inicio:.5f}")
         flash(camino, 'error')
         return redirect("/bancos/grafo_ver_admin", code=302)
     else:

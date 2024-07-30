@@ -4,6 +4,7 @@ import os, re, json
 from controls.tda.graph.adjacent import Adjacent
 from controls.banco.distancia import Distancia
 from controls.tda.linked.linkedList import Linked_List
+from controls.tda.queque.queque import QueQue
 
 class BancoGrafo():
     def __init__(self):
@@ -44,8 +45,8 @@ class BancoGrafo():
                 for i in range(0, len(adyacencias)):
                     dic = adyacencias[i]
                     ady = Adjacent()
-                    origenAdy = self.__ndao._list().binary_search_models(dic["from"], "_id")
-                    destinoAdy = self.__ndao._list().binary_search_models(dic["to"], "_id")
+                    origenAdy = self.__ndao._list().binary_search_models_id(dic["from"], "_id")
+                    destinoAdy = self.__ndao._list().binary_search_models_id(dic["to"], "_id")
         
                     peso = Distancia().calcularDistancia(origenAdy._longitud, origenAdy._latitud, destinoAdy._longitud, destinoAdy._latitud)
                     self.__grafo.__listAdjacent = []
@@ -194,53 +195,77 @@ class BancoGrafo():
     
     
     def dijkstra(self, origen, destino):
+        distancias = Linked_List()
+        no_visitados = Linked_List()
+        predecesores = Linked_List()
+        destinoId = int(destino)-1
+        destinoEtiqueta = self.__ndao.to_dic()[int(destino)-1]["nombre"]
+        origenEtiqueta = self.__ndao.to_dic()[int(origen)-1]["nombre"]    
         
-        origenid = int(origen)-1
-        destinoid = int(destino)-1
-        dicElementos = self.__ndao.to_dic()
-        elementoOrigen = dicElementos[origenid]["nombre"]
-        elementoDestino = dicElementos[destinoid]["nombre"]
+        #Inicializar listas
+        for i in range(0, len(self.__ndao.to_dic())):
+            distancias.addLast(float("inf"))
+            no_visitados.addLast(self.__ndao.to_dic()[i]["nombre"])
+            predecesores.addLast(None)
         
-        distancia = 0
-        camino = "La ruta mas corta es: "
-        camino = camino + str(elementoOrigen) + " --> "
-        elemento = elementoOrigen
-        visitados = Linked_List()
-        for i in range(0, len(dicElementos)):
-            visitados.addNode(False)
+        distancias.get(int(origen)-1)._data = 0
+        
+        
+        while no_visitados._length > 0:
+            etiquetaActual = self.__grafo.getLabel(int(origen)-1)
+            adyacentes = self.__grafo.adjacent_E(etiquetaActual)
             
-        visitados.get(origenid)._data = True
-        
-        while elemento != elementoDestino:
-            adyacentes = self.__grafo.adjacent_E(elemento)
             for i in range(0, adyacentes._length):
-                verticeAdy = adyacentes.getNode(i)
-                peso = verticeAdy._weight
-                if visitados.get(int(verticeAdy._destination))._data:
-                    continue
-                else:
-                    for j in range(0, adyacentes._length):
-                        if peso > adyacentes.getNode(j)._weight and not visitados.get(int(adyacentes.getNode(j)._destination))._data:
-                            peso = adyacentes.getNode(j)._weight
-                            verticeAdy = adyacentes.getNode(j)
+                vecino = adyacentes.getNode(i)._destination
+                etiquetaVecino = self.__grafo.getLabel(vecino)
+                existe = False
+                for j in range(0, no_visitados._length):
+                   if no_visitados.get(j)._data == etiquetaVecino:
+                       existe = True
+                       break
                 
-               
+                if existe:
+                    if distancias.get(int(vecino))._data > distancias.get(int(origen)-1)._data + adyacentes.getNode(i)._weight:
+                        distancias.get(int(vecino))._data = distancias.get(int(origen)-1)._data + adyacentes.getNode(i)._weight
+                        predecesores.get(int(vecino))._data = etiquetaActual
                         
-                
-                elemento = dicElementos[int(verticeAdy._destination)]["nombre"]
-                distancia += peso
-                if elemento == elementoDestino:
-                    camino += str(elemento)
-                else:        
-                    camino += str(elemento) + " --> "
-                visitados.get(int(verticeAdy._destination))._data = True
-                break
-            
+            no_visitados.delete(int(origen)-1)
                    
-        return "".join(camino) + "  |Con una distancia de: " + str(round(float(distancia),3))
+                            
+            next_nodo = None
+            min = float("inf")
+            for i in range(0, no_visitados._length):
+                nodoEtiqueta = no_visitados.get(i)._data
+                nodo = self.__grafo.getVertex(nodoEtiqueta)
+                dist = distancias.get(nodo)._data
+                next_nodo = nodo
+                if dist < min:
+                    min = dist
+                    next_nodo = nodo
+                   
+            origen = next_nodo
         
+
+
+
+        listaCamino = Linked_List()
+        listaCamino.addFirst(destinoEtiqueta)
         
+        while destinoEtiqueta != origenEtiqueta:
+            id = self.__grafo.getVertex(destinoEtiqueta)
+            destinoEtiqueta = predecesores.get(id)._data
+            listaCamino.addFirst(destinoEtiqueta)
+            
+        camino = "La ruta mas corta es: "
+        for i in range(0, listaCamino._length):
+            camino += listaCamino.getNode(i)
+            if i < listaCamino._length - 1:
+                camino += " --> "
+            
         
+                
+        return "".join(camino) + "  |Con una distancia de: " + str(round(float(distancias.get(int(destinoId))._data),3))
        
+  
             
         

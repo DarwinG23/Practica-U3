@@ -90,7 +90,7 @@ class Banco:
         return banco
     
     def __str__(self) -> str:
-        return f"{self.__id} {self.__nombre}  {self.__latitud} {self.__longitud}"
+        return f"{self.__id} {self.__nombre}"
 
         
 
