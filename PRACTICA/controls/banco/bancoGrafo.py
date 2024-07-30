@@ -241,7 +241,7 @@ class BancoGrafo():
             
 
             origen = self.__grafo.getVertex(etiquetaActual)
-            no_visitados.print
+            
             
             for i in range (0, no_visitados._length):
                 if etiquetaActual == no_visitados.get(i)._data:
@@ -259,7 +259,7 @@ class BancoGrafo():
                 if dist < min:
                     min = dist
                     next_nodo_dist_min = nodo
-                    etiquetaMin = no_visitados.get(i)._data
+                    
                     
                     
 

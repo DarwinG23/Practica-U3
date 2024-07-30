@@ -136,8 +136,8 @@ def encontrar_ruta(origen, destino, metodo):
         else:
             camino = bg.dijkstra(origen, destino)
         fin = time.time()
-        print("######################################################")
-        print(f"Timepo: {fin-inicio:.5f}")
+        # print("######################################################")
+        # print(f"Timepo: {fin-inicio:.5f}")
         flash(camino, 'error')
         return redirect("/bancos/grafo_ver_admin", code=302)
     else:
