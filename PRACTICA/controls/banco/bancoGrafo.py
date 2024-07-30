@@ -210,47 +210,70 @@ class BancoGrafo():
         
         distancias.get(int(origen)-1)._data = 0
         
-        
+
+        origen = int(origen)-1
         while no_visitados._length > 0:
-            etiquetaActual = self.__grafo.getLabel(int(origen)-1)
+            etiquetaActual = self.__grafo.getLabel(int(origen))
             adyacentes = self.__grafo.adjacent_E(etiquetaActual)
             
-            for i in range(0, adyacentes._length):
-                vecino = adyacentes.getNode(i)._destination
-                etiquetaVecino = self.__grafo.getLabel(vecino)
-                existe = False
-                for j in range(0, no_visitados._length):
-                   if no_visitados.get(j)._data == etiquetaVecino:
-                       existe = True
-                       break
-                
-                if existe:
-                    if distancias.get(int(vecino))._data > distancias.get(int(origen)-1)._data + adyacentes.getNode(i)._weight:
-                        distancias.get(int(vecino))._data = distancias.get(int(origen)-1)._data + adyacentes.getNode(i)._weight
-                        predecesores.get(int(vecino))._data = etiquetaActual
+            for i in range(0, no_visitados._length):
+                if etiquetaActual == no_visitados.get(i)._data:
+                    for i in range(0, adyacentes._length):
+                        vecino = adyacentes.getNode(i)._destination
+                        etiquetaVecino = self.__grafo.getLabel(vecino)
+                        existe = False
+                        for j in range(0, no_visitados._length):
+                            if no_visitados.get(j)._data == etiquetaVecino:
+                                existe = True
+                                break
                         
-            no_visitados.delete(int(origen)-1)
-                   
-                            
-            next_nodo = None
+                        if existe:
+                            origen_id = int(origen) 
+                            vecino_id = int(vecino)
+                            nueva_distancia = distancias.get(origen_id)._data + adyacentes.getNode(i)._weight
+
+                            if distancias.get(vecino_id)._data > nueva_distancia:
+                                distancias.get(vecino_id)._data = nueva_distancia
+                                predecesores.get(vecino_id)._data = etiquetaActual
+                    else:
+                        continue
+    
+            
+
+            origen = self.__grafo.getVertex(etiquetaActual)
+            no_visitados.print
+            
+            for i in range (0, no_visitados._length):
+                if etiquetaActual == no_visitados.get(i)._data:
+                    no_visitados.delete(i)
+                    break
+
+                
+
+            next_nodo_dist_min = None
             min = float("inf")
             for i in range(0, no_visitados._length):
                 nodoEtiqueta = no_visitados.get(i)._data
                 nodo = self.__grafo.getVertex(nodoEtiqueta)
                 dist = distancias.get(nodo)._data
-                next_nodo = nodo
                 if dist < min:
                     min = dist
-                    next_nodo = nodo
-                   
-            origen = next_nodo
+                    next_nodo_dist_min = nodo
+                    etiquetaMin = no_visitados.get(i)._data
+                    
+                    
+
+
+            origen = next_nodo_dist_min
+
+            
         
 
 
 
         listaCamino = Linked_List()
         listaCamino.addFirst(destinoEtiqueta)
-        
+        predecesores.print
         while destinoEtiqueta != origenEtiqueta:
             id = self.__grafo.getVertex(destinoEtiqueta)
             destinoEtiqueta = predecesores.get(id)._data
